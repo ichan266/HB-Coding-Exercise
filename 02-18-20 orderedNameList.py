@@ -73,5 +73,5 @@ def OrderedNameList1(nameList: list):
 
     return newList
 
-OrderedNameList(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"])
-OrderedNameList1(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"])
+print(OrderedNameList(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
+print(OrderedNameList1(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
