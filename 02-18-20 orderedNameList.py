@@ -22,56 +22,71 @@
 # ]
 
 # Check: first name unique -> first name only
-# Check: if 1st name not unique, look for last name initial -> 
+# Check: if 1st name not unique, look for last name initial ->
 # Check: if 1st name not unique, last name's first initial not unique -> add entire name
 
-#Empty list -> []
+# Empty list -> []
 # "Jason Alexander".split(' ') -> [["Jason", "Alexander"], ["Megan", "Smith"], ["Megan", "Fox"]]
 
 def OrderedNameList(nameList: list):
 
     splitNameList = [name.split(" ") for name in nameList]
-   
-    firstNameDict = {}      # This creates a dictionary to keep track of the number of first names
-    for name in splitNameList:
-        firstNameDict[name[0]] = firstNameDict.get(name[0], 0) + 1
 
-    fnamelnameiniDict = {}      # This creates a dictionary with first name with last initial and count them, like {"Jason A.": 2, "Megan F.":1, }
+    # This creates a dictionary to keep track of the number of first names
+    firstNameDict = {}
     for name in splitNameList:
-        fnamelnameiniDict[f"{name[0]} {name[1][0]}."] = fnamelnameiniDict.get(f"{name[0]} {name[1][0]}.", 0) + 1
+        fname = name[0]
+        firstNameDict[fname] = firstNameDict.get(fname, 0) + 1
+
+    # This creates a dictionary with first name with last initial and count them, like {"Jason A.": 2, "Megan F.":1, }
+    fnamelnameiniDict = {}
+    for name in splitNameList:
+        fname, lini = name[0], name[1][0]
+        fnamelnameiniDict[f"{fname} {lini}."] = fnamelnameiniDict.get(
+            f"{fname} {lini}.", 0) + 1
 
     newList = []
     for name in splitNameList:
-        if firstNameDict[name[0]] == 1:
-            newList.append(name[0])
-        elif fnamelnameiniDict[f"{name[0]} {name[1][0]}."] == 1:
-            newList.append(f"{name[0]} {name[1][0]}.")
+        fname, lini = name[0], name[1][0]
+        if firstNameDict[fname] == 1:
+            newList.append(fname)
+        elif fnamelnameiniDict[f"{fname} {lini}."] == 1:
+            newList.append(f"{fname} {lini}.")
         else:
             newList.append(" ".join(name))
 
     return newList
 
 
-
 def OrderedNameList1(nameList: list):
 
-    splitNameList = [name.split(" ") for name in nameList]
-   
-    firstNameDict = {}      
-    for name in splitNameList:      # find all first names as keys then add last initial as values -> {'Jason': ['A', 'S', 'A'], 'Megan': ['S', 'F'], 'Iris': ['K']}
-        firstNameDict[name[0]] = firstNameDict.get(name[0], [])  # This will create an empty list for value if the name (key) doesn't exist
-        firstNameDict[name[0]].append(name[1][0])
+    splitNameList = [name.split(" ")
+                     for name in nameList]  # -> ["Jason", "Avocado"]
+
+    firstNameDict = {}
+    # find all first names as keys then add last initial as values -> {'Jason': ['A', 'S', 'A'], 'Megan': ['S', 'F'], 'Iris': ['K']}
+    for name in splitNameList:
+        # This will create an empty list for value if the name (key) doesn't exist
+        fname, lini = name[0], name[1][0]
+        firstNameDict[fname] = firstNameDict.get(fname, [])
+        firstNameDict[fname].append(lini)
 
     newList = []
     for name in splitNameList:
-        if len(firstNameDict[name[0]]) == 1:  # counting how many values associated with the key. If only 1 values found, eg. 'Iris': ['K']
-            newList.append(name[0])
-        elif  len(firstNameDict[name[0]]) >= 1 and firstNameDict[name[0]].count(name[1][0]) == 1: # if more than 1 values, then see if only one last initial
-            newList.append(f"{name[0]} {name[1][0]}.")
+        # counting how many values (last initial) associated with the key (first name). If only 1 values found, eg. 'Iris': ['K']
+        fname, lini = name[0], name[1][0]
+        if len(firstNameDict[fname]) == 1:
+            newList.append(fname)
+        # if more than 1 values, then see if only one last initial
+        elif len(firstNameDict[fname]) >= 1 and firstNameDict[fname].count(lini) == 1:
+            newList.append(f"{fname} {lini}.")
         else:   # if it doesn't meet the above criteria
             newList.append(" ".join(name))
 
     return newList
 
-print(OrderedNameList(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
-print(OrderedNameList1(["Jason Alexander", "Megan Smith", "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
+
+print(OrderedNameList(["Jason Alexander", "Megan Smith",
+                       "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
+print(OrderedNameList1(["Jason Alexander", "Megan Smith",
+                        "Megan Fox", "Jason Sudekis", "Jason Avocado", "Siena Aguayo"]))
